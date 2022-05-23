@@ -1,3 +1,4 @@
+import Header from "components/header";
 import Head from "next/head";
 import type { FC } from "react";
 
@@ -12,6 +13,7 @@ const PageLayout: FC<Props> = ({ title = "Reddit Clone", children }) => {
       <Head>
         <title>{title}</title>
       </Head>
+      <Header />
       {children}
     </>
   );
