@@ -1,7 +1,13 @@
+import PageLayout from "layouts/page";
+import Home from "modules/home";
 import type { NextPage } from "next";
 
-const Home: NextPage = () => {
-  return <></>;
+const HomePage: NextPage = () => {
+  return (
+    <PageLayout>
+      <Home />
+    </PageLayout>
+  );
 };
 
-export default Home;
+export default HomePage;
