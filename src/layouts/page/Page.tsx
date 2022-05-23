@@ -14,7 +14,7 @@ const PageLayout: FC<Props> = ({ title = "Reddit Clone", children }) => {
         <title>{title}</title>
       </Head>
       <Header />
-      {children}
+      <div className="h-[calc(100vh-10rem)]"> {children}</div>
     </>
   );
 };
