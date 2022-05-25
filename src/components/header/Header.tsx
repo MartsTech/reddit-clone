@@ -35,8 +35,8 @@ const Header = () => {
       </div>
       <HeaderSearchBox />
       <div
-        className="text-gray-500 items-center space-x-2 
-        mx-5 hidden lg:inline-flex"
+        className="text-gray-500 items-center space-x-2 mx-5
+        hidden lg:inline-flex"
       >
         <HeaderIcon Icon={SparklesIcon} />
         <HeaderIcon Icon={GlobeIcon} />

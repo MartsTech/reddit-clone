@@ -4,7 +4,7 @@ import Image from "next/image";
 import LoginProvider from "./components/Provider";
 
 interface Props {
-  providers: AuthProviders | null;
+  providers: AuthProviders;
 }
 
 const Login: FC<Props> = ({ providers }) => {
@@ -24,10 +24,9 @@ const Login: FC<Props> = ({ providers }) => {
           />
         </div>
         <div className="mt-2">
-          {providers &&
-            Object.values(providers).map((provider) => (
-              <LoginProvider key={provider.name} provider={provider} />
-            ))}
+          {Object.values(providers).map((provider) => (
+            <LoginProvider key={provider.name} provider={provider} />
+          ))}
         </div>
       </div>
     </div>

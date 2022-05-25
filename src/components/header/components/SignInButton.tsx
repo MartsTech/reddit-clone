@@ -11,7 +11,7 @@ const HeaderSignInButton = () => {
       {session.status === "authenticated" ? (
         <div
           className="hidden md:flex items-center space-x-2 p-2
-        border-gray-100 cursor-pointer"
+          border-gray-100 cursor-pointer"
           onClick={() => signOut()}
         >
           <div className="relative h-6 w-6 flex-shrink-0 ml-2">
@@ -32,7 +32,7 @@ const HeaderSignInButton = () => {
         <Link href="/login">
           <div
             className="hidden md:flex items-center space-x-2 p-2
-        border-gray-100 cursor-pointer"
+            border-gray-100 cursor-pointer"
           >
             <div className="relative h-6 w-6 flex-shrink-0 ml-2">
               <Image

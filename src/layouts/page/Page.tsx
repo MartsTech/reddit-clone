@@ -9,13 +9,13 @@ interface Props {
 
 const PageLayout: FC<Props> = ({ title = "Reddit Clone", children }) => {
   return (
-    <>
+    <div className="h-screen overflow-y-scroll bg-slate-200">
       <Head>
         <title>{title}</title>
       </Head>
       <Header />
-      <div className="h-[calc(100vh-10rem)]"> {children}</div>
-    </>
+      <main className="h-[calc(100vh-10rem)]">{children}</main>
+    </div>
   );
 };
 
