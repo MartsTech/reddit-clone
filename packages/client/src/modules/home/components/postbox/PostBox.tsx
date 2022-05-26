@@ -1,29 +1,88 @@
+import { gql } from "@apollo/client";
 import { PhotographIcon } from "@heroicons/react/outline";
 import Avatar from "components/avatar";
+import client from "configs/apollo-client";
+import {
+  GetSubredditListByTopicDocument,
+  useGetSubredditListByTopicLazyQuery,
+  useInsertPostMutation,
+  useInsertSubredditMutation,
+} from "generated/graphql";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import type { PostFormValues } from "types/post";
 import PostBoxInput from "./components/Input";
-
-type FormData = {
-  title: string;
-  body: string;
-  image: string;
-  subreddit: string;
-};
 
 const PostBox = () => {
   const session = useSession();
+  const [getSubredditListByTopic] = useGetSubredditListByTopicLazyQuery({
+    fetchPolicy: "network-only",
+  });
+  const [insertPost] = useInsertPostMutation();
+  const [insertSubreddit] = useInsertSubredditMutation();
   const [isImageBoxOpened, setIsImageBoxOpened] = useState(false);
   const {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<PostFormValues>();
 
-  const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
+  const onSubmit = handleSubmit(async (formData) => {
+    const notification = toast.loading("Creating new post...");
+
+    try {
+      if (typeof session.data?.user?.name !== "string") {
+        throw new Error("User not logged in");
+      }
+
+      const { data } = await getSubredditListByTopic({
+        variables: {
+          topic: formData.subreddit,
+        },
+      });
+
+      if (
+        typeof data !== "undefined" &&
+        data.getSubredditListByTopic &&
+        data.getSubredditListByTopic[0]
+      ) {
+        await insertPost({
+          variables: {
+            body: formData.body,
+            image: formData.image || "",
+            subreddit_id: data.getSubredditListByTopic[0].id,
+            title: formData.title,
+            username: session.data.user.name,
+          },
+        });
+      } else {
+        const result = await insertSubreddit({
+          variables: { topic: formData.subreddit },
+        });
+
+        if (typeof result.data?.insertSubreddit?.id !== "string") {
+          throw new Error("Subreddit not created");
+        }
+
+        await insertPost({
+          variables: {
+            body: formData.body,
+            image: formData.image || "",
+            subreddit_id: result.data.insertSubreddit.id,
+            title: formData.title,
+            username: session.data.user.name,
+          },
+        });
+      }
+      reset();
+      toast.success("New Post Created!", { id: notification });
+    } catch (error) {
+      toast.error("Something went wrong!", { id: notification });
+    }
   });
 
   return (

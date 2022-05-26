@@ -1,0 +1,9 @@
+overwrite: true
+schema: "http://localhost:5001/api/reddit-clone"
+documents: "src/graphql/**/*.graphql"
+generates:
+  src/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"

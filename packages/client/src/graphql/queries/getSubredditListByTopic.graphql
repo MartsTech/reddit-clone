@@ -1,0 +1,7 @@
+query getSubredditListByTopic($topic: String!) {
+  getSubredditListByTopic(topic: $topic) {
+    created_at
+    id
+    topic
+  }
+}

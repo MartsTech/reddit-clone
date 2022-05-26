@@ -1,0 +1,7 @@
+mutation InsertSubreddit($topic: String!) {
+  insertSubreddit(topic: $topic) {
+    created_at
+    id
+    topic
+  }
+}
