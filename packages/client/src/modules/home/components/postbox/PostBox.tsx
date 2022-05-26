@@ -1,9 +1,6 @@
-import { gql } from "@apollo/client";
 import { PhotographIcon } from "@heroicons/react/outline";
 import Avatar from "components/avatar";
-import client from "configs/apollo-client";
 import {
-  GetSubredditListByTopicDocument,
   useGetSubredditListByTopicLazyQuery,
   useInsertPostMutation,
   useInsertSubredditMutation,

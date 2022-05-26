@@ -1,33 +1,33 @@
 type Comment {
-  body: String
-  created_at: DateTime
+  body: String!
+  created_at: DateTime!
   id: ID!
-  post_id: ID
-  username: String
+  post_id: ID!
+  username: String!
 }
 
 type Post {
   body: String
-  created_at: DateTime
+  created_at: DateTime!
   id: ID!
   image: String
-  subreddit_id: ID
-  title: String
-  username: String
+  subreddit_id: ID!
+  title: String!
+  username: String!
 }
 
 type Subreddit {
-  created_at: DateTime
+  created_at: DateTime!
   id: ID!
-  topic: String
+  topic: String!
 }
 
 type Vote {
-  created_at: DateTime
+  created_at: DateTime!
   id: ID!
-  post_id: ID
-  upvote: Int
-  username: String
+  post_id: ID!
+  upvote: Int!
+  username: String!
 }
 
 type Query {
@@ -92,7 +92,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      select * from "public"."subreddit" where "topic" = $1
+      select * from "public"."subreddit" where "topic" = $1 limit 1
       """
       configuration: "postgresql_config"
     )

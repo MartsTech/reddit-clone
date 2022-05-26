@@ -1,5 +1,4 @@
 import { SearchIcon } from "@heroicons/react/solid";
-import React from "react";
 
 const HeaderSearchBox = () => {
   return (
