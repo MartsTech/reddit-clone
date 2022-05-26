@@ -19,11 +19,11 @@ export type Scalars = {
 
 export type Comment = {
   __typename?: 'Comment';
-  body?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['DateTime']>;
+  body: Scalars['String'];
+  created_at: Scalars['DateTime'];
   id: Scalars['ID'];
-  post_id?: Maybe<Scalars['ID']>;
-  username?: Maybe<Scalars['String']>;
+  post_id: Scalars['ID'];
+  username: Scalars['String'];
 };
 
 /**
@@ -107,12 +107,15 @@ export type MutationInsertSubredditArgs = {
 export type Post = {
   __typename?: 'Post';
   body?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['DateTime']>;
+  comments?: Maybe<Array<Maybe<Comment>>>;
+  created_at: Scalars['DateTime'];
   id: Scalars['ID'];
   image?: Maybe<Scalars['String']>;
-  subreddit_id?: Maybe<Scalars['ID']>;
-  title?: Maybe<Scalars['String']>;
-  username?: Maybe<Scalars['String']>;
+  subreddit?: Maybe<Array<Maybe<Subreddit>>>;
+  subreddit_id: Scalars['ID'];
+  title: Scalars['String'];
+  username: Scalars['String'];
+  votes?: Maybe<Array<Maybe<Vote>>>;
 };
 
 /**
@@ -125,23 +128,21 @@ export type Post = {
  */
 export type Query = {
   __typename?: 'Query';
+  getCommentList?: Maybe<Array<Maybe<Comment>>>;
   /**
    * In this example, a single query parameter is passed. If the request to the DB will
    * return at most one value you can remove the square brackets from the result.
    */
-  getCommentByPost_id?: Maybe<Array<Maybe<Comment>>>;
-  /**
-   * In this example, two query parameters are passed. If the request to the DB will
-   * return at most one value you can remove the square brackets from the result.
-   */
-  getCommentByPost_idAndBody?: Maybe<Array<Maybe<Comment>>>;
-  getCommentList?: Maybe<Array<Maybe<Comment>>>;
+  getCommentListByPost_id?: Maybe<Array<Maybe<Comment>>>;
   /** This query is an example of how to simply paginate your responses. */
   getPaginatedCommentList?: Maybe<Array<Maybe<Comment>>>;
+  getPaginatedPostList?: Maybe<Array<Maybe<Post>>>;
   getPostList?: Maybe<Array<Maybe<Post>>>;
   getSubredditList?: Maybe<Array<Maybe<Subreddit>>>;
+  getSubredditListById?: Maybe<Array<Maybe<Subreddit>>>;
   getSubredditListByTopic?: Maybe<Array<Maybe<Subreddit>>>;
   getVoteList?: Maybe<Array<Maybe<Vote>>>;
+  getVoteListByPost_id?: Maybe<Array<Maybe<Vote>>>;
 };
 
 
@@ -153,21 +154,7 @@ export type Query = {
  * If an operation is a `query`, the result of the operation is the result of
  * executing the query’s top level selection set with the `Query` root object type.
  */
-export type QueryGetCommentByPost_IdArgs = {
-  post_id: Scalars['ID'];
-};
-
-
-/**
- * Query root object type.
- *
- * Contains fields that are available at the top level of a GraphQL `query`.
- *
- * If an operation is a `query`, the result of the operation is the result of
- * executing the query’s top level selection set with the `Query` root object type.
- */
-export type QueryGetCommentByPost_IdAndBodyArgs = {
-  body: Scalars['String'];
+export type QueryGetCommentListByPost_IdArgs = {
   post_id: Scalars['ID'];
 };
 
@@ -194,24 +181,64 @@ export type QueryGetPaginatedCommentListArgs = {
  * If an operation is a `query`, the result of the operation is the result of
  * executing the query’s top level selection set with the `Query` root object type.
  */
+export type QueryGetPaginatedPostListArgs = {
+  after: Scalars['Int'];
+  first: Scalars['Int'];
+};
+
+
+/**
+ * Query root object type.
+ *
+ * Contains fields that are available at the top level of a GraphQL `query`.
+ *
+ * If an operation is a `query`, the result of the operation is the result of
+ * executing the query’s top level selection set with the `Query` root object type.
+ */
+export type QueryGetSubredditListByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+/**
+ * Query root object type.
+ *
+ * Contains fields that are available at the top level of a GraphQL `query`.
+ *
+ * If an operation is a `query`, the result of the operation is the result of
+ * executing the query’s top level selection set with the `Query` root object type.
+ */
 export type QueryGetSubredditListByTopicArgs = {
   topic: Scalars['String'];
 };
 
+
+/**
+ * Query root object type.
+ *
+ * Contains fields that are available at the top level of a GraphQL `query`.
+ *
+ * If an operation is a `query`, the result of the operation is the result of
+ * executing the query’s top level selection set with the `Query` root object type.
+ */
+export type QueryGetVoteListByPost_IdArgs = {
+  post_id: Scalars['ID'];
+};
+
 export type Subreddit = {
   __typename?: 'Subreddit';
-  created_at?: Maybe<Scalars['DateTime']>;
+  created_at: Scalars['DateTime'];
   id: Scalars['ID'];
-  topic?: Maybe<Scalars['String']>;
+  topic: Scalars['String'];
 };
 
 export type Vote = {
   __typename?: 'Vote';
-  created_at?: Maybe<Scalars['DateTime']>;
+  created_at: Scalars['DateTime'];
   id: Scalars['ID'];
-  post_id?: Maybe<Scalars['ID']>;
-  upvote?: Maybe<Scalars['Int']>;
-  username?: Maybe<Scalars['String']>;
+  post_id: Scalars['ID'];
+  upvote: Scalars['Int'];
+  username: Scalars['String'];
 };
 
 export type InsertPostMutationVariables = Exact<{
@@ -223,21 +250,29 @@ export type InsertPostMutationVariables = Exact<{
 }>;
 
 
-export type InsertPostMutation = { __typename?: 'Mutation', insertPost?: { __typename?: 'Post', body?: string | null, created_at?: any | null, id: string, image?: string | null, subreddit_id?: string | null, title?: string | null, username?: string | null } | null };
+export type InsertPostMutation = { __typename?: 'Mutation', insertPost?: { __typename?: 'Post', body?: string | null, created_at: any, id: string, image?: string | null, subreddit_id: string, title: string, username: string } | null };
 
 export type InsertSubredditMutationVariables = Exact<{
   topic: Scalars['String'];
 }>;
 
 
-export type InsertSubredditMutation = { __typename?: 'Mutation', insertSubreddit?: { __typename?: 'Subreddit', created_at?: any | null, id: string, topic?: string | null } | null };
+export type InsertSubredditMutation = { __typename?: 'Mutation', insertSubreddit?: { __typename?: 'Subreddit', created_at: any, id: string, topic: string } | null };
+
+export type GetPaginatedPostListQueryVariables = Exact<{
+  after: Scalars['Int'];
+  first: Scalars['Int'];
+}>;
+
+
+export type GetPaginatedPostListQuery = { __typename?: 'Query', getPaginatedPostList?: Array<{ __typename?: 'Post', body?: string | null, created_at: any, id: string, image?: string | null, subreddit_id: string, title: string, username: string, comments?: Array<{ __typename?: 'Comment', body: string, created_at: any, id: string, post_id: string, username: string } | null> | null, subreddit?: Array<{ __typename?: 'Subreddit', created_at: any, id: string, topic: string } | null> | null, votes?: Array<{ __typename?: 'Vote', created_at: any, id: string, post_id: string, upvote: number, username: string } | null> | null } | null> | null };
 
 export type GetSubredditListByTopicQueryVariables = Exact<{
   topic: Scalars['String'];
 }>;
 
 
-export type GetSubredditListByTopicQuery = { __typename?: 'Query', getSubredditListByTopic?: Array<{ __typename?: 'Subreddit', created_at?: any | null, id: string, topic?: string | null } | null> | null };
+export type GetSubredditListByTopicQuery = { __typename?: 'Query', getSubredditListByTopic?: Array<{ __typename?: 'Subreddit', created_at: any, id: string, topic: string } | null> | null };
 
 
 export const InsertPostDocument = gql`
@@ -324,6 +359,67 @@ export function useInsertSubredditMutation(baseOptions?: Apollo.MutationHookOpti
 export type InsertSubredditMutationHookResult = ReturnType<typeof useInsertSubredditMutation>;
 export type InsertSubredditMutationResult = Apollo.MutationResult<InsertSubredditMutation>;
 export type InsertSubredditMutationOptions = Apollo.BaseMutationOptions<InsertSubredditMutation, InsertSubredditMutationVariables>;
+export const GetPaginatedPostListDocument = gql`
+    query getPaginatedPostList($after: Int!, $first: Int!) {
+  getPaginatedPostList(after: $after, first: $first) {
+    body
+    comments {
+      body
+      created_at
+      id
+      post_id
+      username
+    }
+    created_at
+    id
+    image
+    subreddit {
+      created_at
+      id
+      topic
+    }
+    subreddit_id
+    title
+    username
+    votes {
+      created_at
+      id
+      post_id
+      upvote
+      username
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPaginatedPostListQuery__
+ *
+ * To run a query within a React component, call `useGetPaginatedPostListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPaginatedPostListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPaginatedPostListQuery({
+ *   variables: {
+ *      after: // value for 'after'
+ *      first: // value for 'first'
+ *   },
+ * });
+ */
+export function useGetPaginatedPostListQuery(baseOptions: Apollo.QueryHookOptions<GetPaginatedPostListQuery, GetPaginatedPostListQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPaginatedPostListQuery, GetPaginatedPostListQueryVariables>(GetPaginatedPostListDocument, options);
+      }
+export function useGetPaginatedPostListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPaginatedPostListQuery, GetPaginatedPostListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPaginatedPostListQuery, GetPaginatedPostListQueryVariables>(GetPaginatedPostListDocument, options);
+        }
+export type GetPaginatedPostListQueryHookResult = ReturnType<typeof useGetPaginatedPostListQuery>;
+export type GetPaginatedPostListLazyQueryHookResult = ReturnType<typeof useGetPaginatedPostListLazyQuery>;
+export type GetPaginatedPostListQueryResult = Apollo.QueryResult<GetPaginatedPostListQuery, GetPaginatedPostListQueryVariables>;
 export const GetSubredditListByTopicDocument = gql`
     query getSubredditListByTopic($topic: String!) {
   getSubredditListByTopic(topic: $topic) {

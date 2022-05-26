@@ -14,6 +14,21 @@ type Post {
   subreddit_id: ID!
   title: String!
   username: String!
+  subreddit: [Subreddit]
+    @materializer(
+      query: "getSubredditListById"
+      arguments: [{ name: "id", field: "subreddit_id" }]
+    )
+  comments: [Comment]
+    @materializer(
+      query: "getCommentListByPost_id"
+      arguments: [{ name: "post_id", field: "id" }]
+    )
+  votes: [Vote]
+    @materializer(
+      query: "getVoteListByPost_id"
+      arguments: [{ name: "post_id", field: "id" }]
+    )
 }
 
 type Subreddit {
@@ -53,23 +68,12 @@ type Query {
   In this example, a single query parameter is passed. If the request to the DB will
   return at most one value you can remove the square brackets from the result.
   """
-  getCommentByPost_id(post_id: ID!): [Comment]
+  getCommentListByPost_id(post_id: ID!): [Comment]
     @dbquery(
       type: "postgresql"
       query: """
       select * from "public"."comment" where "post_id" = $1
-      """
-      configuration: "postgresql_config"
-    )
-  """
-  In this example, two query parameters are passed. If the request to the DB will
-  return at most one value you can remove the square brackets from the result.
-  """
-  getCommentByPost_idAndBody(post_id: ID!, body: String!): [Comment]
-    @dbquery(
-      type: "postgresql"
-      query: """
-      select * from "public"."comment" where "post_id" = $1 and "body" = $2
+      order by "created_at" desc
       """
       configuration: "postgresql_config"
     )
@@ -78,6 +82,15 @@ type Query {
       type: "postgresql"
       schema: "public"
       table: "post"
+      configuration: "postgresql_config"
+    )
+  getPaginatedPostList(first: Int!, after: Int!): [Post]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      select * from "public"."post" limit $1 offset $2
+      """
       configuration: "postgresql_config"
     )
   getSubredditList: [Subreddit]
@@ -92,7 +105,16 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      select * from "public"."subreddit" where "topic" = $1 limit 1
+      select * from "public"."subreddit" where "topic" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  getSubredditListById(id: ID!): [Subreddit]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      select * from "public"."subreddit" where "id" = $1
       """
       configuration: "postgresql_config"
     )
@@ -101,6 +123,14 @@ type Query {
       type: "postgresql"
       schema: "public"
       table: "vote"
+      configuration: "postgresql_config"
+    )
+  getVoteListByPost_id(post_id: ID!): [Vote]
+    @dbquery(
+      type: "postgresql"
+      query: """
+      select * from "public"."vote" where "post_id" = $1
+      """
       configuration: "postgresql_config"
     )
 }
