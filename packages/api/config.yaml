@@ -1,4 +1,0 @@
-configurationset:
-  - configuration:
-      name: postgresql_config
-      uri: postgresql://db.vdeqyhubzngfeagnoxgu.supabase.co/postgres?user=postgres&password=9y5_dVJhbh4%21Z%24x
