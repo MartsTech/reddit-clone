@@ -1,6 +1,7 @@
 import { PhotographIcon } from "@heroicons/react/outline";
 import Avatar from "components/avatar";
 import {
+  GetPaginatedPostListDocument,
   useGetSubredditListByTopicLazyQuery,
   useInsertPostMutation,
   useInsertSubredditMutation,
@@ -17,7 +18,24 @@ const PostBox = () => {
   const [getSubredditListByTopic] = useGetSubredditListByTopicLazyQuery({
     fetchPolicy: "network-only",
   });
-  const [insertPost] = useInsertPostMutation();
+  const [insertPost] = useInsertPostMutation({
+    update: (cache, { data }) => {
+      const query = cache.readQuery({
+        query: GetPaginatedPostListDocument,
+        variables: { after: 0, first: 20 },
+      }) as any;
+      cache.writeQuery({
+        query: GetPaginatedPostListDocument,
+        variables: { after: 0, first: 20 },
+        data: {
+          getPaginatedPostList: [
+            data!.insertPost,
+            ...query.getPaginatedPostList,
+          ],
+        },
+      });
+    },
+  });
   const [insertSubreddit] = useInsertSubredditMutation();
   const [isImageBoxOpened, setIsImageBoxOpened] = useState(false);
   const {

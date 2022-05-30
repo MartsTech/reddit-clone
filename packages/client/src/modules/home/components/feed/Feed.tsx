@@ -7,7 +7,7 @@ const Feed = () => {
   });
 
   return (
-    <div>
+    <div className="mt-5 space-y-4">
       {data?.getPaginatedPostList?.map(
         (post) => post && <FeedPost key={post.id} post={post} />
       )}

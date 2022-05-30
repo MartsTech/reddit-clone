@@ -89,7 +89,9 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      select * from "public"."post" limit $1 offset $2
+      select * from "public"."post"
+      order by "created_at" desc
+      limit $1 offset $2
       """
       configuration: "postgresql_config"
     )
