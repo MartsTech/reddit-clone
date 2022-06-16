@@ -1,0 +1,30 @@
+query GetPaginatedPostListByTopic($topic: String!, $first: Int!, $after: Int!) {
+  getPaginatedPostListByTopic(topic: $topic, first: $first, after: $after) {
+    body
+    comments {
+      body
+      created_at
+      id
+      post_id
+      username
+    }
+    created_at
+    id
+    image
+    subreddit {
+      created_at
+      id
+      topic
+    }
+    subreddit_id
+    title
+    username
+    votes {
+      created_at
+      id
+      post_id
+      upvote
+      username
+    }
+  }
+}

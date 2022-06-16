@@ -1,5 +1,5 @@
-import Feed from "./components/feed";
-import PostBox from "./components/postbox/PostBox";
+import Feed from "components/feed";
+import PostBox from "components/postbox";
 
 const Home = () => {
   return (

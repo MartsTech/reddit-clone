@@ -137,6 +137,7 @@ export type Query = {
   /** This query is an example of how to simply paginate your responses. */
   getPaginatedCommentList?: Maybe<Array<Maybe<Comment>>>;
   getPaginatedPostList?: Maybe<Array<Maybe<Post>>>;
+  getPaginatedPostListByTopic?: Maybe<Array<Maybe<Post>>>;
   getPostList?: Maybe<Array<Maybe<Post>>>;
   getSubredditList?: Maybe<Array<Maybe<Subreddit>>>;
   getSubredditListById?: Maybe<Array<Maybe<Subreddit>>>;
@@ -184,6 +185,21 @@ export type QueryGetPaginatedCommentListArgs = {
 export type QueryGetPaginatedPostListArgs = {
   after: Scalars['Int'];
   first: Scalars['Int'];
+};
+
+
+/**
+ * Query root object type.
+ *
+ * Contains fields that are available at the top level of a GraphQL `query`.
+ *
+ * If an operation is a `query`, the result of the operation is the result of
+ * executing the query’s top level selection set with the `Query` root object type.
+ */
+export type QueryGetPaginatedPostListByTopicArgs = {
+  after: Scalars['Int'];
+  first: Scalars['Int'];
+  topic: Scalars['String'];
 };
 
 
@@ -266,6 +282,15 @@ export type GetPaginatedPostListQueryVariables = Exact<{
 
 
 export type GetPaginatedPostListQuery = { __typename?: 'Query', getPaginatedPostList?: Array<{ __typename?: 'Post', body?: string | null, created_at: any, id: string, image?: string | null, subreddit_id: string, title: string, username: string, comments?: Array<{ __typename?: 'Comment', body: string, created_at: any, id: string, post_id: string, username: string } | null> | null, subreddit?: Array<{ __typename?: 'Subreddit', created_at: any, id: string, topic: string } | null> | null, votes?: Array<{ __typename?: 'Vote', created_at: any, id: string, post_id: string, upvote: number, username: string } | null> | null } | null> | null };
+
+export type GetPaginatedPostListByTopicQueryVariables = Exact<{
+  topic: Scalars['String'];
+  first: Scalars['Int'];
+  after: Scalars['Int'];
+}>;
+
+
+export type GetPaginatedPostListByTopicQuery = { __typename?: 'Query', getPaginatedPostListByTopic?: Array<{ __typename?: 'Post', body?: string | null, created_at: any, id: string, image?: string | null, subreddit_id: string, title: string, username: string, comments?: Array<{ __typename?: 'Comment', body: string, created_at: any, id: string, post_id: string, username: string } | null> | null, subreddit?: Array<{ __typename?: 'Subreddit', created_at: any, id: string, topic: string } | null> | null, votes?: Array<{ __typename?: 'Vote', created_at: any, id: string, post_id: string, upvote: number, username: string } | null> | null } | null> | null };
 
 export type GetSubredditListByTopicQueryVariables = Exact<{
   topic: Scalars['String'];
@@ -420,6 +445,68 @@ export function useGetPaginatedPostListLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type GetPaginatedPostListQueryHookResult = ReturnType<typeof useGetPaginatedPostListQuery>;
 export type GetPaginatedPostListLazyQueryHookResult = ReturnType<typeof useGetPaginatedPostListLazyQuery>;
 export type GetPaginatedPostListQueryResult = Apollo.QueryResult<GetPaginatedPostListQuery, GetPaginatedPostListQueryVariables>;
+export const GetPaginatedPostListByTopicDocument = gql`
+    query GetPaginatedPostListByTopic($topic: String!, $first: Int!, $after: Int!) {
+  getPaginatedPostListByTopic(topic: $topic, first: $first, after: $after) {
+    body
+    comments {
+      body
+      created_at
+      id
+      post_id
+      username
+    }
+    created_at
+    id
+    image
+    subreddit {
+      created_at
+      id
+      topic
+    }
+    subreddit_id
+    title
+    username
+    votes {
+      created_at
+      id
+      post_id
+      upvote
+      username
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPaginatedPostListByTopicQuery__
+ *
+ * To run a query within a React component, call `useGetPaginatedPostListByTopicQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPaginatedPostListByTopicQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPaginatedPostListByTopicQuery({
+ *   variables: {
+ *      topic: // value for 'topic'
+ *      first: // value for 'first'
+ *      after: // value for 'after'
+ *   },
+ * });
+ */
+export function useGetPaginatedPostListByTopicQuery(baseOptions: Apollo.QueryHookOptions<GetPaginatedPostListByTopicQuery, GetPaginatedPostListByTopicQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPaginatedPostListByTopicQuery, GetPaginatedPostListByTopicQueryVariables>(GetPaginatedPostListByTopicDocument, options);
+      }
+export function useGetPaginatedPostListByTopicLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPaginatedPostListByTopicQuery, GetPaginatedPostListByTopicQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPaginatedPostListByTopicQuery, GetPaginatedPostListByTopicQueryVariables>(GetPaginatedPostListByTopicDocument, options);
+        }
+export type GetPaginatedPostListByTopicQueryHookResult = ReturnType<typeof useGetPaginatedPostListByTopicQuery>;
+export type GetPaginatedPostListByTopicLazyQueryHookResult = ReturnType<typeof useGetPaginatedPostListByTopicLazyQuery>;
+export type GetPaginatedPostListByTopicQueryResult = Apollo.QueryResult<GetPaginatedPostListByTopicQuery, GetPaginatedPostListByTopicQueryVariables>;
 export const GetSubredditListByTopicDocument = gql`
     query getSubredditListByTopic($topic: String!) {
   getSubredditListByTopic(topic: $topic) {

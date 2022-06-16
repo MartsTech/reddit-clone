@@ -1,13 +1,22 @@
 import Loading from "components/loading";
+import PageLayout from "layouts/page";
 import Subreddit from "modules/subreddit";
 import { useRouter } from "next/router";
 
 const SubredditPage = () => {
   const router = useRouter();
   if (typeof router.query.topic !== "string") {
-    return <Loading />;
+    return (
+      <PageLayout>
+        <Loading />
+      </PageLayout>
+    );
   }
-  return <Subreddit topic={router.query.topic} />;
+  return (
+    <PageLayout>
+      <Subreddit topic={router.query.topic} />
+    </PageLayout>
+  );
 };
 
 export default SubredditPage;

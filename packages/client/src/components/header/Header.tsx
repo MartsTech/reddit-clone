@@ -16,7 +16,10 @@ import HeaderSignInButton from "./components/SignInButton";
 
 const Header = () => {
   return (
-    <header className="sticky top-0 z-50 flex bg-white px-4 py-2 shadow-sm">
+    <header
+      className="sticky top-0 z-50 flex bg-white px-4 py-2 
+      shadow-sm items-center"
+    >
       <Link href="/">
         <div className="relative h-10 w-24 flex-shrink-0 cursor-pointer">
           <Image

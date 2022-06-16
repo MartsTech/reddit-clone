@@ -1,39 +1,65 @@
 import { PhotographIcon } from "@heroicons/react/outline";
 import Avatar from "components/avatar";
 import {
+  GetPaginatedPostListByTopicDocument,
   GetPaginatedPostListDocument,
+  useGetPaginatedPostListLazyQuery,
+  useGetPaginatedPostListQuery,
   useGetSubredditListByTopicLazyQuery,
   useInsertPostMutation,
   useInsertSubredditMutation,
 } from "generated/graphql";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import type { PostFormValues } from "types/post";
 import PostBoxInput from "./components/Input";
 
-const PostBox = () => {
+interface Props {
+  subreddit?: string;
+}
+
+const PostBox: FC<Props> = ({ subreddit }) => {
   const session = useSession();
   const [getSubredditListByTopic] = useGetSubredditListByTopicLazyQuery({
     fetchPolicy: "network-only",
   });
   const [insertPost] = useInsertPostMutation({
     update: (cache, { data }) => {
-      const query = cache.readQuery({
-        query: GetPaginatedPostListDocument,
-        variables: { after: 0, first: 20 },
-      }) as any;
-      cache.writeQuery({
-        query: GetPaginatedPostListDocument,
-        variables: { after: 0, first: 20 },
-        data: {
-          getPaginatedPostList: [
-            data!.insertPost,
-            ...query.getPaginatedPostList,
-          ],
-        },
-      });
+      if (typeof subreddit === "undefined") {
+        const getPaginatedPostListQuery = cache.readQuery({
+          query: GetPaginatedPostListDocument,
+          variables: { after: 0, first: 20 },
+        }) as any;
+
+        cache.writeQuery({
+          query: GetPaginatedPostListDocument,
+          variables: { after: 0, first: 20 },
+          data: {
+            getPaginatedPostList: [
+              data!.insertPost,
+              ...getPaginatedPostListQuery.getPaginatedPostList,
+            ],
+          },
+        });
+      } else {
+        const getPaginatedPostListByTopicQuery = cache.readQuery({
+          query: GetPaginatedPostListByTopicDocument,
+          variables: { topic: subreddit, after: 0, first: 20 },
+        }) as any;
+
+        cache.writeQuery({
+          query: GetPaginatedPostListByTopicDocument,
+          variables: { topic: subreddit, after: 0, first: 20 },
+          data: {
+            getPaginatedPostListByTopic: [
+              data!.insertPost,
+              ...getPaginatedPostListByTopicQuery.getPaginatedPostListByTopic,
+            ],
+          },
+        });
+      }
     },
   });
   const [insertSubreddit] = useInsertSubredditMutation();
@@ -56,7 +82,8 @@ const PostBox = () => {
 
       const { data } = await getSubredditListByTopic({
         variables: {
-          topic: formData.subreddit,
+          topic:
+            typeof subreddit !== "undefined" ? subreddit : formData.subreddit,
         },
       });
 
@@ -116,7 +143,9 @@ const PostBox = () => {
           type="text"
           placeholder={
             session.status === "authenticated"
-              ? `Create a post`
+              ? typeof subreddit !== "undefined"
+                ? `Create a post in r/${subreddit}`
+                : `Create a post`
               : "Sign in to post"
           }
           disabled={session.status !== "authenticated"}
@@ -136,11 +165,13 @@ const PostBox = () => {
             placeholder="Text (Optional)"
             register={register("body")}
           />
-          <PostBoxInput
-            title="Subreddit"
-            placeholder="E.g next.js"
-            register={register("subreddit", { required: true })}
-          />
+          {typeof subreddit === "undefined" && (
+            <PostBoxInput
+              title="Subreddit"
+              placeholder="E.g next.js"
+              register={register("subreddit", { required: true })}
+            />
+          )}
           {isImageBoxOpened && (
             <PostBoxInput
               title="Image URL:"
