@@ -77,6 +77,14 @@ type Query {
       """
       configuration: "postgresql_config"
     )
+  getPostListByPost_id(post_id: ID!): [Post]
+    @dbquery(
+      type: "postgresql"
+      query: """
+      select * from "public"."post" where "id" = $1
+      """
+      configuration: "postgresql_config"
+    )
   getPostList: [Post]
     @dbquery(
       type: "postgresql"
@@ -165,6 +173,14 @@ type Mutation {
       type: "postgresql"
       schema: "public"
       table: "post"
+      dml: INSERT
+      configuration: "postgresql_config"
+    )
+  insertComment(post_id: ID!, username: String!, body: String!): Comment
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "comment"
       dml: INSERT
       configuration: "postgresql_config"
     )

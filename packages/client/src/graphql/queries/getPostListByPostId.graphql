@@ -1,0 +1,30 @@
+query GetPostListByPostId($post_id: ID!) {
+  getPostListByPost_id(post_id: $post_id) {
+    body
+    comments {
+      body
+      created_at
+      id
+      post_id
+      username
+    }
+    created_at
+    id
+    image
+    subreddit {
+      created_at
+      id
+      topic
+    }
+    subreddit_id
+    title
+    username
+    votes {
+      created_at
+      id
+      post_id
+      upvote
+      username
+    }
+  }
+}

@@ -3,14 +3,13 @@ import Avatar from "components/avatar";
 import {
   GetPaginatedPostListByTopicDocument,
   GetPaginatedPostListDocument,
-  useGetPaginatedPostListLazyQuery,
-  useGetPaginatedPostListQuery,
   useGetSubredditListByTopicLazyQuery,
   useInsertPostMutation,
   useInsertSubredditMutation,
 } from "generated/graphql";
 import { useSession } from "next-auth/react";
-import { FC, useState } from "react";
+import type { FC } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import type { PostFormValues } from "types/post";

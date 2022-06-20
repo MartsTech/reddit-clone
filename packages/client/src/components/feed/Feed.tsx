@@ -1,12 +1,9 @@
-import Loading from "components/loading";
 import {
   Post,
-  useGetPaginatedPostListByTopicLazyQuery,
   useGetPaginatedPostListByTopicQuery,
-  useGetPaginatedPostListLazyQuery,
   useGetPaginatedPostListQuery,
 } from "generated/graphql";
-import { FC, useCallback, useEffect, useState } from "react";
+import type { FC } from "react";
 import FeedPost from "./components/Post";
 
 interface Props {
@@ -14,7 +11,7 @@ interface Props {
 }
 
 const Feed: FC<Props> = ({ subreddit }) => {
-  const { data, error } =
+  const { data } =
     typeof subreddit === "undefined"
       ? // eslint-disable-next-line react-hooks/rules-of-hooks
         useGetPaginatedPostListQuery({ variables: { after: 0, first: 20 } })

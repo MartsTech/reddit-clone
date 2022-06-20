@@ -1,0 +1,9 @@
+mutation InsertComment($post_id: ID!, $username: String!, $body: String!) {
+  insertComment(post_id: $post_id, username: $username, body: $body) {
+    body
+    created_at
+    id
+    post_id
+    username
+  }
+}

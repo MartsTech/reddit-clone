@@ -6,7 +6,6 @@ import {
 import Avatar from "components/avatar";
 import type { Post } from "generated/graphql";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import type { FC } from "react";
 import TimeAgo from "react-timeago";
 
@@ -15,8 +14,6 @@ interface Props {
 }
 
 const FeedPost: FC<Props> = ({ post }) => {
-  const router = useRouter();
-
   return (
     <Link href={`/post/${post.id}`}>
       <div

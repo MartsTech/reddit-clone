@@ -41,6 +41,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   /** In this mutation example you can see how to do a mutation to delete data from the database. */
   deletePost?: Maybe<Post>;
+  insertComment?: Maybe<Comment>;
   /** In this mutation example you can see how to do a mutation to insert data in the database. */
   insertPost?: Maybe<Post>;
   insertSubreddit?: Maybe<Subreddit>;
@@ -65,6 +66,24 @@ export type MutationDeletePostArgs = {
   image: Scalars['String'];
   subreddit_id: Scalars['ID'];
   title: Scalars['String'];
+  username: Scalars['String'];
+};
+
+
+/**
+ * Mutation root object type.
+ *
+ * Contains fields that are available at the top level of a GraphQL `mutation`.
+ *
+ * If an operation is a `mutation`, the result of the operation is the result of executing the mutation’s
+ * top level selection set on the `Mutation` root object type. This selection set is executed serially.
+ *
+ * It is expected that the top level fields in a `mutation` operation perform side‐effects on backend data systems.
+ * Serial execution of the provided mutations ensures against race conditions during these side‐effects.
+ */
+export type MutationInsertCommentArgs = {
+  body: Scalars['String'];
+  post_id: Scalars['ID'];
   username: Scalars['String'];
 };
 
@@ -139,6 +158,7 @@ export type Query = {
   getPaginatedPostList?: Maybe<Array<Maybe<Post>>>;
   getPaginatedPostListByTopic?: Maybe<Array<Maybe<Post>>>;
   getPostList?: Maybe<Array<Maybe<Post>>>;
+  getPostListByPost_id?: Maybe<Array<Maybe<Post>>>;
   getSubredditList?: Maybe<Array<Maybe<Subreddit>>>;
   getSubredditListById?: Maybe<Array<Maybe<Subreddit>>>;
   getSubredditListByTopic?: Maybe<Array<Maybe<Subreddit>>>;
@@ -211,6 +231,19 @@ export type QueryGetPaginatedPostListByTopicArgs = {
  * If an operation is a `query`, the result of the operation is the result of
  * executing the query’s top level selection set with the `Query` root object type.
  */
+export type QueryGetPostListByPost_IdArgs = {
+  post_id: Scalars['ID'];
+};
+
+
+/**
+ * Query root object type.
+ *
+ * Contains fields that are available at the top level of a GraphQL `query`.
+ *
+ * If an operation is a `query`, the result of the operation is the result of
+ * executing the query’s top level selection set with the `Query` root object type.
+ */
 export type QueryGetSubredditListByIdArgs = {
   id: Scalars['ID'];
 };
@@ -257,6 +290,15 @@ export type Vote = {
   username: Scalars['String'];
 };
 
+export type InsertCommentMutationVariables = Exact<{
+  post_id: Scalars['ID'];
+  username: Scalars['String'];
+  body: Scalars['String'];
+}>;
+
+
+export type InsertCommentMutation = { __typename?: 'Mutation', insertComment?: { __typename?: 'Comment', body: string, created_at: any, id: string, post_id: string, username: string } | null };
+
 export type InsertPostMutationVariables = Exact<{
   body: Scalars['String'];
   image: Scalars['String'];
@@ -292,6 +334,13 @@ export type GetPaginatedPostListByTopicQueryVariables = Exact<{
 
 export type GetPaginatedPostListByTopicQuery = { __typename?: 'Query', getPaginatedPostListByTopic?: Array<{ __typename?: 'Post', body?: string | null, created_at: any, id: string, image?: string | null, subreddit_id: string, title: string, username: string, comments?: Array<{ __typename?: 'Comment', body: string, created_at: any, id: string, post_id: string, username: string } | null> | null, subreddit?: Array<{ __typename?: 'Subreddit', created_at: any, id: string, topic: string } | null> | null, votes?: Array<{ __typename?: 'Vote', created_at: any, id: string, post_id: string, upvote: number, username: string } | null> | null } | null> | null };
 
+export type GetPostListByPostIdQueryVariables = Exact<{
+  post_id: Scalars['ID'];
+}>;
+
+
+export type GetPostListByPostIdQuery = { __typename?: 'Query', getPostListByPost_id?: Array<{ __typename?: 'Post', body?: string | null, created_at: any, id: string, image?: string | null, subreddit_id: string, title: string, username: string, comments?: Array<{ __typename?: 'Comment', body: string, created_at: any, id: string, post_id: string, username: string } | null> | null, subreddit?: Array<{ __typename?: 'Subreddit', created_at: any, id: string, topic: string } | null> | null, votes?: Array<{ __typename?: 'Vote', created_at: any, id: string, post_id: string, upvote: number, username: string } | null> | null } | null> | null };
+
 export type GetSubredditListByTopicQueryVariables = Exact<{
   topic: Scalars['String'];
 }>;
@@ -300,6 +349,45 @@ export type GetSubredditListByTopicQueryVariables = Exact<{
 export type GetSubredditListByTopicQuery = { __typename?: 'Query', getSubredditListByTopic?: Array<{ __typename?: 'Subreddit', created_at: any, id: string, topic: string } | null> | null };
 
 
+export const InsertCommentDocument = gql`
+    mutation InsertComment($post_id: ID!, $username: String!, $body: String!) {
+  insertComment(post_id: $post_id, username: $username, body: $body) {
+    body
+    created_at
+    id
+    post_id
+    username
+  }
+}
+    `;
+export type InsertCommentMutationFn = Apollo.MutationFunction<InsertCommentMutation, InsertCommentMutationVariables>;
+
+/**
+ * __useInsertCommentMutation__
+ *
+ * To run a mutation, you first call `useInsertCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertCommentMutation, { data, loading, error }] = useInsertCommentMutation({
+ *   variables: {
+ *      post_id: // value for 'post_id'
+ *      username: // value for 'username'
+ *      body: // value for 'body'
+ *   },
+ * });
+ */
+export function useInsertCommentMutation(baseOptions?: Apollo.MutationHookOptions<InsertCommentMutation, InsertCommentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertCommentMutation, InsertCommentMutationVariables>(InsertCommentDocument, options);
+      }
+export type InsertCommentMutationHookResult = ReturnType<typeof useInsertCommentMutation>;
+export type InsertCommentMutationResult = Apollo.MutationResult<InsertCommentMutation>;
+export type InsertCommentMutationOptions = Apollo.BaseMutationOptions<InsertCommentMutation, InsertCommentMutationVariables>;
 export const InsertPostDocument = gql`
     mutation InsertPost($body: String!, $image: String!, $subreddit_id: ID!, $title: String!, $username: String!) {
   insertPost(
@@ -507,6 +595,66 @@ export function useGetPaginatedPostListByTopicLazyQuery(baseOptions?: Apollo.Laz
 export type GetPaginatedPostListByTopicQueryHookResult = ReturnType<typeof useGetPaginatedPostListByTopicQuery>;
 export type GetPaginatedPostListByTopicLazyQueryHookResult = ReturnType<typeof useGetPaginatedPostListByTopicLazyQuery>;
 export type GetPaginatedPostListByTopicQueryResult = Apollo.QueryResult<GetPaginatedPostListByTopicQuery, GetPaginatedPostListByTopicQueryVariables>;
+export const GetPostListByPostIdDocument = gql`
+    query GetPostListByPostId($post_id: ID!) {
+  getPostListByPost_id(post_id: $post_id) {
+    body
+    comments {
+      body
+      created_at
+      id
+      post_id
+      username
+    }
+    created_at
+    id
+    image
+    subreddit {
+      created_at
+      id
+      topic
+    }
+    subreddit_id
+    title
+    username
+    votes {
+      created_at
+      id
+      post_id
+      upvote
+      username
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPostListByPostIdQuery__
+ *
+ * To run a query within a React component, call `useGetPostListByPostIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPostListByPostIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPostListByPostIdQuery({
+ *   variables: {
+ *      post_id: // value for 'post_id'
+ *   },
+ * });
+ */
+export function useGetPostListByPostIdQuery(baseOptions: Apollo.QueryHookOptions<GetPostListByPostIdQuery, GetPostListByPostIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPostListByPostIdQuery, GetPostListByPostIdQueryVariables>(GetPostListByPostIdDocument, options);
+      }
+export function useGetPostListByPostIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPostListByPostIdQuery, GetPostListByPostIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPostListByPostIdQuery, GetPostListByPostIdQueryVariables>(GetPostListByPostIdDocument, options);
+        }
+export type GetPostListByPostIdQueryHookResult = ReturnType<typeof useGetPostListByPostIdQuery>;
+export type GetPostListByPostIdLazyQueryHookResult = ReturnType<typeof useGetPostListByPostIdLazyQuery>;
+export type GetPostListByPostIdQueryResult = Apollo.QueryResult<GetPostListByPostIdQuery, GetPostListByPostIdQueryVariables>;
 export const GetSubredditListByTopicDocument = gql`
     query getSubredditListByTopic($topic: String!) {
   getSubredditListByTopic(topic: $topic) {
