@@ -1,0 +1,9 @@
+query GetVoteListByPostId($post_id: ID!) {
+  getVoteListByPost_id(post_id: $post_id) {
+    created_at
+    id
+    post_id
+    upvote
+    username
+  }
+}

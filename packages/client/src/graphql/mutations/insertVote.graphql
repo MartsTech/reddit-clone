@@ -1,0 +1,9 @@
+mutation InsertVote($post_id: ID!, $username: String!, $upvote: Boolean!) {
+  insertVote(post_id: $post_id, username: $username, upvote: $upvote) {
+    id
+    created_at
+    post_id
+    upvote
+    username
+  }
+}

@@ -45,6 +45,7 @@ export type Mutation = {
   /** In this mutation example you can see how to do a mutation to insert data in the database. */
   insertPost?: Maybe<Post>;
   insertSubreddit?: Maybe<Subreddit>;
+  insertVote?: Maybe<Vote>;
 };
 
 
@@ -121,6 +122,24 @@ export type MutationInsertPostArgs = {
  */
 export type MutationInsertSubredditArgs = {
   topic: Scalars['String'];
+};
+
+
+/**
+ * Mutation root object type.
+ *
+ * Contains fields that are available at the top level of a GraphQL `mutation`.
+ *
+ * If an operation is a `mutation`, the result of the operation is the result of executing the mutation’s
+ * top level selection set on the `Mutation` root object type. This selection set is executed serially.
+ *
+ * It is expected that the top level fields in a `mutation` operation perform side‐effects on backend data systems.
+ * Serial execution of the provided mutations ensures against race conditions during these side‐effects.
+ */
+export type MutationInsertVoteArgs = {
+  post_id: Scalars['ID'];
+  upvote: Scalars['Boolean'];
+  username: Scalars['String'];
 };
 
 export type Post = {
@@ -286,7 +305,7 @@ export type Vote = {
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
   post_id: Scalars['ID'];
-  upvote: Scalars['Int'];
+  upvote: Scalars['Boolean'];
   username: Scalars['String'];
 };
 
@@ -317,13 +336,22 @@ export type InsertSubredditMutationVariables = Exact<{
 
 export type InsertSubredditMutation = { __typename?: 'Mutation', insertSubreddit?: { __typename?: 'Subreddit', created_at: any, id: string, topic: string } | null };
 
+export type InsertVoteMutationVariables = Exact<{
+  post_id: Scalars['ID'];
+  username: Scalars['String'];
+  upvote: Scalars['Boolean'];
+}>;
+
+
+export type InsertVoteMutation = { __typename?: 'Mutation', insertVote?: { __typename?: 'Vote', id: string, created_at: any, post_id: string, upvote: boolean, username: string } | null };
+
 export type GetPaginatedPostListQueryVariables = Exact<{
   after: Scalars['Int'];
   first: Scalars['Int'];
 }>;
 
 
-export type GetPaginatedPostListQuery = { __typename?: 'Query', getPaginatedPostList?: Array<{ __typename?: 'Post', body?: string | null, created_at: any, id: string, image?: string | null, subreddit_id: string, title: string, username: string, comments?: Array<{ __typename?: 'Comment', body: string, created_at: any, id: string, post_id: string, username: string } | null> | null, subreddit?: Array<{ __typename?: 'Subreddit', created_at: any, id: string, topic: string } | null> | null, votes?: Array<{ __typename?: 'Vote', created_at: any, id: string, post_id: string, upvote: number, username: string } | null> | null } | null> | null };
+export type GetPaginatedPostListQuery = { __typename?: 'Query', getPaginatedPostList?: Array<{ __typename?: 'Post', body?: string | null, created_at: any, id: string, image?: string | null, subreddit_id: string, title: string, username: string, comments?: Array<{ __typename?: 'Comment', body: string, created_at: any, id: string, post_id: string, username: string } | null> | null, subreddit?: Array<{ __typename?: 'Subreddit', created_at: any, id: string, topic: string } | null> | null, votes?: Array<{ __typename?: 'Vote', created_at: any, id: string, post_id: string, upvote: boolean, username: string } | null> | null } | null> | null };
 
 export type GetPaginatedPostListByTopicQueryVariables = Exact<{
   topic: Scalars['String'];
@@ -332,14 +360,14 @@ export type GetPaginatedPostListByTopicQueryVariables = Exact<{
 }>;
 
 
-export type GetPaginatedPostListByTopicQuery = { __typename?: 'Query', getPaginatedPostListByTopic?: Array<{ __typename?: 'Post', body?: string | null, created_at: any, id: string, image?: string | null, subreddit_id: string, title: string, username: string, comments?: Array<{ __typename?: 'Comment', body: string, created_at: any, id: string, post_id: string, username: string } | null> | null, subreddit?: Array<{ __typename?: 'Subreddit', created_at: any, id: string, topic: string } | null> | null, votes?: Array<{ __typename?: 'Vote', created_at: any, id: string, post_id: string, upvote: number, username: string } | null> | null } | null> | null };
+export type GetPaginatedPostListByTopicQuery = { __typename?: 'Query', getPaginatedPostListByTopic?: Array<{ __typename?: 'Post', body?: string | null, created_at: any, id: string, image?: string | null, subreddit_id: string, title: string, username: string, comments?: Array<{ __typename?: 'Comment', body: string, created_at: any, id: string, post_id: string, username: string } | null> | null, subreddit?: Array<{ __typename?: 'Subreddit', created_at: any, id: string, topic: string } | null> | null, votes?: Array<{ __typename?: 'Vote', created_at: any, id: string, post_id: string, upvote: boolean, username: string } | null> | null } | null> | null };
 
 export type GetPostListByPostIdQueryVariables = Exact<{
   post_id: Scalars['ID'];
 }>;
 
 
-export type GetPostListByPostIdQuery = { __typename?: 'Query', getPostListByPost_id?: Array<{ __typename?: 'Post', body?: string | null, created_at: any, id: string, image?: string | null, subreddit_id: string, title: string, username: string, comments?: Array<{ __typename?: 'Comment', body: string, created_at: any, id: string, post_id: string, username: string } | null> | null, subreddit?: Array<{ __typename?: 'Subreddit', created_at: any, id: string, topic: string } | null> | null, votes?: Array<{ __typename?: 'Vote', created_at: any, id: string, post_id: string, upvote: number, username: string } | null> | null } | null> | null };
+export type GetPostListByPostIdQuery = { __typename?: 'Query', getPostListByPost_id?: Array<{ __typename?: 'Post', body?: string | null, created_at: any, id: string, image?: string | null, subreddit_id: string, title: string, username: string, comments?: Array<{ __typename?: 'Comment', body: string, created_at: any, id: string, post_id: string, username: string } | null> | null, subreddit?: Array<{ __typename?: 'Subreddit', created_at: any, id: string, topic: string } | null> | null, votes?: Array<{ __typename?: 'Vote', created_at: any, id: string, post_id: string, upvote: boolean, username: string } | null> | null } | null> | null };
 
 export type GetSubredditListByTopicQueryVariables = Exact<{
   topic: Scalars['String'];
@@ -347,6 +375,13 @@ export type GetSubredditListByTopicQueryVariables = Exact<{
 
 
 export type GetSubredditListByTopicQuery = { __typename?: 'Query', getSubredditListByTopic?: Array<{ __typename?: 'Subreddit', created_at: any, id: string, topic: string } | null> | null };
+
+export type GetVoteListByPostIdQueryVariables = Exact<{
+  post_id: Scalars['ID'];
+}>;
+
+
+export type GetVoteListByPostIdQuery = { __typename?: 'Query', getVoteListByPost_id?: Array<{ __typename?: 'Vote', created_at: any, id: string, post_id: string, upvote: boolean, username: string } | null> | null };
 
 
 export const InsertCommentDocument = gql`
@@ -472,6 +507,45 @@ export function useInsertSubredditMutation(baseOptions?: Apollo.MutationHookOpti
 export type InsertSubredditMutationHookResult = ReturnType<typeof useInsertSubredditMutation>;
 export type InsertSubredditMutationResult = Apollo.MutationResult<InsertSubredditMutation>;
 export type InsertSubredditMutationOptions = Apollo.BaseMutationOptions<InsertSubredditMutation, InsertSubredditMutationVariables>;
+export const InsertVoteDocument = gql`
+    mutation InsertVote($post_id: ID!, $username: String!, $upvote: Boolean!) {
+  insertVote(post_id: $post_id, username: $username, upvote: $upvote) {
+    id
+    created_at
+    post_id
+    upvote
+    username
+  }
+}
+    `;
+export type InsertVoteMutationFn = Apollo.MutationFunction<InsertVoteMutation, InsertVoteMutationVariables>;
+
+/**
+ * __useInsertVoteMutation__
+ *
+ * To run a mutation, you first call `useInsertVoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertVoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertVoteMutation, { data, loading, error }] = useInsertVoteMutation({
+ *   variables: {
+ *      post_id: // value for 'post_id'
+ *      username: // value for 'username'
+ *      upvote: // value for 'upvote'
+ *   },
+ * });
+ */
+export function useInsertVoteMutation(baseOptions?: Apollo.MutationHookOptions<InsertVoteMutation, InsertVoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertVoteMutation, InsertVoteMutationVariables>(InsertVoteDocument, options);
+      }
+export type InsertVoteMutationHookResult = ReturnType<typeof useInsertVoteMutation>;
+export type InsertVoteMutationResult = Apollo.MutationResult<InsertVoteMutation>;
+export type InsertVoteMutationOptions = Apollo.BaseMutationOptions<InsertVoteMutation, InsertVoteMutationVariables>;
 export const GetPaginatedPostListDocument = gql`
     query getPaginatedPostList($after: Int!, $first: Int!) {
   getPaginatedPostList(after: $after, first: $first) {
@@ -692,3 +766,42 @@ export function useGetSubredditListByTopicLazyQuery(baseOptions?: Apollo.LazyQue
 export type GetSubredditListByTopicQueryHookResult = ReturnType<typeof useGetSubredditListByTopicQuery>;
 export type GetSubredditListByTopicLazyQueryHookResult = ReturnType<typeof useGetSubredditListByTopicLazyQuery>;
 export type GetSubredditListByTopicQueryResult = Apollo.QueryResult<GetSubredditListByTopicQuery, GetSubredditListByTopicQueryVariables>;
+export const GetVoteListByPostIdDocument = gql`
+    query GetVoteListByPostId($post_id: ID!) {
+  getVoteListByPost_id(post_id: $post_id) {
+    created_at
+    id
+    post_id
+    upvote
+    username
+  }
+}
+    `;
+
+/**
+ * __useGetVoteListByPostIdQuery__
+ *
+ * To run a query within a React component, call `useGetVoteListByPostIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetVoteListByPostIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetVoteListByPostIdQuery({
+ *   variables: {
+ *      post_id: // value for 'post_id'
+ *   },
+ * });
+ */
+export function useGetVoteListByPostIdQuery(baseOptions: Apollo.QueryHookOptions<GetVoteListByPostIdQuery, GetVoteListByPostIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetVoteListByPostIdQuery, GetVoteListByPostIdQueryVariables>(GetVoteListByPostIdDocument, options);
+      }
+export function useGetVoteListByPostIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetVoteListByPostIdQuery, GetVoteListByPostIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetVoteListByPostIdQuery, GetVoteListByPostIdQueryVariables>(GetVoteListByPostIdDocument, options);
+        }
+export type GetVoteListByPostIdQueryHookResult = ReturnType<typeof useGetVoteListByPostIdQuery>;
+export type GetVoteListByPostIdLazyQueryHookResult = ReturnType<typeof useGetVoteListByPostIdLazyQuery>;
+export type GetVoteListByPostIdQueryResult = Apollo.QueryResult<GetVoteListByPostIdQuery, GetVoteListByPostIdQueryVariables>;
