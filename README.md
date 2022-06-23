@@ -33,7 +33,7 @@
 
 ## Demo
 
-Here is a working live demo [here](https://expo.dev/@martstech/snapchat-clone/)
+Here is a working live demo [here](https://reddit-clone-martstech.vercel.app/)
 
 ---
 
