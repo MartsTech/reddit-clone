@@ -8,7 +8,7 @@
 </h1>
 
 <h4 align="center">
-   Reddit Close created with Next.JS, GraphQL, Stepzen and Supabase
+   Reddit Clone created with Next.JS, GraphQL, Stepzen and Supabase
 </h4>
 
 <div align="center">
