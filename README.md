@@ -64,13 +64,13 @@ Here is a working live demo [here](https://expo.dev/@martstech/snapchat-clone/)
 
 ## Setup
 
-Clone this repo to your desktop and run `yarn install` in /pachages/client to install all the dependencies.
+Clone this repo to your desktop and run `yarn install` in /packages/client to install all the dependencies.
 Then run `yarn dev` to start the application locally
 
 Install the stepzen cli globally and 
-Then run `stepzen start` in /pachages/api to start the api locally
+Then run `stepzen start` in /packages/api to start the api locally
 
-Change the .env.example file to .env.local in /pachages/client and fill the empty fields
+Change the .env.example file to .env.local in /packages/client and fill the empty fields
 
 ---
 
