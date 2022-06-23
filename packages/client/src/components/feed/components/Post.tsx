@@ -156,6 +156,7 @@ const FeedPost: FC<Props> = ({ post }) => {
             <p className="mt-2 text-sm font-light">{post.body}</p>
           </div>
           {typeof post.image === "string" && post.image.length > 0 && (
+            // eslint-disable-next-line @next/next/no-img-element
             <img className="w-full" src={post.image} alt={post.title} />
           )}
           <div className="flex space-x-4 text-gray-400">
