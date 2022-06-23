@@ -1,0 +1,7 @@
+query GetSubredditListWithLimit($limit: Int!) {
+  getSubredditListWithLimit(limit: $limit) {
+    created_at
+    id
+    topic
+  }
+}

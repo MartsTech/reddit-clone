@@ -1,3 +1,4 @@
+import Loading from "components/loading";
 import {
   Post,
   useGetPaginatedPostListByTopicQuery,
@@ -11,7 +12,7 @@ interface Props {
 }
 
 const Feed: FC<Props> = ({ subreddit }) => {
-  const { data } =
+  const { data, loading } =
     typeof subreddit === "undefined"
       ? // eslint-disable-next-line react-hooks/rules-of-hooks
         useGetPaginatedPostListQuery({ variables: { after: 0, first: 20 } })
@@ -28,7 +29,12 @@ const Feed: FC<Props> = ({ subreddit }) => {
         data?.getPaginatedPostListByTopic;
 
   return (
-    <div className="mt-5 space-y-4">
+    <div className="flex-1 mt-5 space-y-4">
+      {loading && (
+        <div className="mt-[50%]">
+          <Loading />
+        </div>
+      )}
       {posts?.map((post) => post && <FeedPost key={post.id} post={post} />)}
     </div>
   );

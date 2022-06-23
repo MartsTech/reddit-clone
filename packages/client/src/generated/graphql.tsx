@@ -13,7 +13,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** `DateTime` scalar type represents a date and time. DateTime is serialized as an RFC 3339 quoted string */
   DateTime: any;
 };
 
@@ -181,6 +180,7 @@ export type Query = {
   getSubredditList?: Maybe<Array<Maybe<Subreddit>>>;
   getSubredditListById?: Maybe<Array<Maybe<Subreddit>>>;
   getSubredditListByTopic?: Maybe<Array<Maybe<Subreddit>>>;
+  getSubredditListWithLimit?: Maybe<Array<Maybe<Subreddit>>>;
   getVoteList?: Maybe<Array<Maybe<Vote>>>;
   getVoteListByPost_id?: Maybe<Array<Maybe<Vote>>>;
 };
@@ -289,6 +289,19 @@ export type QueryGetSubredditListByTopicArgs = {
  * If an operation is a `query`, the result of the operation is the result of
  * executing the query’s top level selection set with the `Query` root object type.
  */
+export type QueryGetSubredditListWithLimitArgs = {
+  limit: Scalars['Int'];
+};
+
+
+/**
+ * Query root object type.
+ *
+ * Contains fields that are available at the top level of a GraphQL `query`.
+ *
+ * If an operation is a `query`, the result of the operation is the result of
+ * executing the query’s top level selection set with the `Query` root object type.
+ */
 export type QueryGetVoteListByPost_IdArgs = {
   post_id: Scalars['ID'];
 };
@@ -375,6 +388,13 @@ export type GetSubredditListByTopicQueryVariables = Exact<{
 
 
 export type GetSubredditListByTopicQuery = { __typename?: 'Query', getSubredditListByTopic?: Array<{ __typename?: 'Subreddit', created_at: any, id: string, topic: string } | null> | null };
+
+export type GetSubredditListWithLimitQueryVariables = Exact<{
+  limit: Scalars['Int'];
+}>;
+
+
+export type GetSubredditListWithLimitQuery = { __typename?: 'Query', getSubredditListWithLimit?: Array<{ __typename?: 'Subreddit', created_at: any, id: string, topic: string } | null> | null };
 
 export type GetVoteListByPostIdQueryVariables = Exact<{
   post_id: Scalars['ID'];
@@ -766,6 +786,43 @@ export function useGetSubredditListByTopicLazyQuery(baseOptions?: Apollo.LazyQue
 export type GetSubredditListByTopicQueryHookResult = ReturnType<typeof useGetSubredditListByTopicQuery>;
 export type GetSubredditListByTopicLazyQueryHookResult = ReturnType<typeof useGetSubredditListByTopicLazyQuery>;
 export type GetSubredditListByTopicQueryResult = Apollo.QueryResult<GetSubredditListByTopicQuery, GetSubredditListByTopicQueryVariables>;
+export const GetSubredditListWithLimitDocument = gql`
+    query GetSubredditListWithLimit($limit: Int!) {
+  getSubredditListWithLimit(limit: $limit) {
+    created_at
+    id
+    topic
+  }
+}
+    `;
+
+/**
+ * __useGetSubredditListWithLimitQuery__
+ *
+ * To run a query within a React component, call `useGetSubredditListWithLimitQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSubredditListWithLimitQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSubredditListWithLimitQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGetSubredditListWithLimitQuery(baseOptions: Apollo.QueryHookOptions<GetSubredditListWithLimitQuery, GetSubredditListWithLimitQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSubredditListWithLimitQuery, GetSubredditListWithLimitQueryVariables>(GetSubredditListWithLimitDocument, options);
+      }
+export function useGetSubredditListWithLimitLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSubredditListWithLimitQuery, GetSubredditListWithLimitQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSubredditListWithLimitQuery, GetSubredditListWithLimitQueryVariables>(GetSubredditListWithLimitDocument, options);
+        }
+export type GetSubredditListWithLimitQueryHookResult = ReturnType<typeof useGetSubredditListWithLimitQuery>;
+export type GetSubredditListWithLimitLazyQueryHookResult = ReturnType<typeof useGetSubredditListWithLimitLazyQuery>;
+export type GetSubredditListWithLimitQueryResult = Apollo.QueryResult<GetSubredditListWithLimitQuery, GetSubredditListWithLimitQueryVariables>;
 export const GetVoteListByPostIdDocument = gql`
     query GetVoteListByPostId($post_id: ID!) {
   getVoteListByPost_id(post_id: $post_id) {
