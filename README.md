@@ -1,5 +1,5 @@
 <h1 align="center">
-  <a href="https://expo.dev/@martstech/snapchat-clone/">
+  <a href="https://reddit-clone-martstech.vercel.app/">
     <img width="200px" src="https://raw.githubusercontent.com/MartsTech/reddit-clone/main/images/logo.png" alt="Reddit Logo" />
   </a>
   <br />
