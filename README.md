@@ -1,7 +1,5 @@
 <h1 align="center">
-  <a href="https://reddit-clone-martstech.vercel.app/">
-    <img width="200px" src="https://raw.githubusercontent.com/MartsTech/reddit-clone/main/images/logo.png" alt="Reddit Logo" />
-  </a>
+  <img width="200px" src="https://raw.githubusercontent.com/MartsTech/reddit-clone/main/images/logo.png" alt="Reddit Logo" />
   <br />
   Reddit Clone
   <br />
@@ -18,7 +16,6 @@
 </div>
 
 <div align="center">
-  <a href="#demo">Demo</a> •
   <a href="#key-features">Key Features</a> •
   <a href="#key-technologies">Key Technologies</a> •
   <a href="#setup">Setup</a> •
@@ -28,12 +25,6 @@
 
 <img style="object-fit: contain" src="https://raw.githubusercontent.com/MartsTech/reddit-clone/main/images/post.png" alt="post" />
 <img style="object-fit: contain" src="https://raw.githubusercontent.com/MartsTech/reddit-clone/main/images/subreddit.png" alt="subreddit" />
-
----
-
-## Demo
-
-Here is a working live demo [here](https://reddit-clone-martstech.vercel.app/)
 
 ---
 
